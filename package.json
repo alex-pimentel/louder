@@ -1,0 +1,30 @@
+{
+  "name": "louder",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Louder — leia PDF e texto em voz alta, 100% no navegador",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run types && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^6.4.299"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.4",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}

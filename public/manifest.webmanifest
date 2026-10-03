@@ -1,0 +1,19 @@
+{
+  "name": "Louder — Leitura em voz alta",
+  "short_name": "Louder",
+  "description": "Leia PDFs, TXT e MD em voz alta, 100% no navegador. Sem upload, sem servidor.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#6c5ce7",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
