@@ -493,7 +493,8 @@ function buildReaderView(): void {
 function highlight(): void {
   for (const element of Array.from(readerText.children)) {
     const index = Number((element as HTMLElement).dataset.index);
-    element.className = index < chunkIndex ? "done" : index === chunkIndex && speaking ? "active" : "";
+    element.className =
+      index < chunkIndex ? "done" : index === chunkIndex && speaking ? "active" : "";
   }
   const active = readerText.querySelector(".active");
   active?.scrollIntoView({ block: "center", behavior: "smooth" });

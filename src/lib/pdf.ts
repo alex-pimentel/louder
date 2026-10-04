@@ -41,5 +41,8 @@ export async function extractPdfText(file: File, options: ExtractPdfOptions = {}
     await loadingTask.destroy();
   }
 
-  return pages.join("\n\n").replace(/\n{3,}/g, "\n\n").trim();
+  return pages
+    .join("\n\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }

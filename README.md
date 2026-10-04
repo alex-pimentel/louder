@@ -45,11 +45,11 @@ O build gera um site estático em `dist/` — sem runtime de servidor.
 
 O `dist/` é compatível com Cloudflare Pages e qualquer host estático:
 
-| Configuração      | Valor            |
-| ----------------- | ---------------- |
-| Build command     | `npm run build`  |
-| Build output dir  | `dist`           |
-| Node version      | 20 ou superior   |
+| Configuração     | Valor           |
+| ---------------- | --------------- |
+| Build command    | `npm run build` |
+| Build output dir | `dist`          |
+| Node version     | 20 ou superior  |
 
 ## Qualidade
 

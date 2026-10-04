@@ -75,10 +75,7 @@ describe("sortVoices", () => {
 });
 
 describe("filterVoices", () => {
-  const voices = [
-    voice({ lang: "pt-BR", name: "PT" }),
-    voice({ lang: "en-US", name: "EN" }),
-  ];
+  const voices = [voice({ lang: "pt-BR", name: "PT" }), voice({ lang: "en-US", name: "EN" })];
 
   it("returns every voice for the 'all' filter", () => {
     expect(filterVoices(voices, "all")).toHaveLength(2);
