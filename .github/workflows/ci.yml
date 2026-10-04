@@ -11,5 +11,6 @@ jobs:
       coverage: true
       run_e2e: true
   security:
+    needs: [quality]
     permissions: { contents: read, security-events: write }
     uses: alex-pimentel/agenteresolve-ci/.github/workflows/security-scan.yml@main
