@@ -1,5 +1,9 @@
 # 🔊 Louder — leia PDF e texto em voz alta, 100% no navegador
 
+[![CI](https://github.com/alex-pimentel/louder/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-pimentel/louder/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/alex-pimentel/louder)](https://github.com/alex-pimentel/louder/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 O Louder extrai o texto de **PDF, TXT e MD** (ou de um texto colado) e o reproduz em voz alta
 usando as vozes do seu próprio sistema. É uma aplicação **web-only**: não há Electron, Python,
 backend nem qualquer processamento no servidor.
@@ -66,6 +70,13 @@ O `dist/` é compatível com Cloudflare Pages e qualquer host estático:
 | Build command    | `npm run build` |
 | Build output dir | `dist`          |
 | Node version     | 20 ou superior  |
+
+Deploy direto com Wrangler:
+
+```bash
+npm run build
+npx wrangler pages deploy dist --project-name=louder
+```
 
 ## Qualidade
 
