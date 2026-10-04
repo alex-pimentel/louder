@@ -59,3 +59,18 @@ test("mostra a dropzone e fala o texto colado ao apertar play", async ({ page })
 
   await expect.poll(() => countSpeakCalls(page)).toBeGreaterThan(0);
 });
+
+test("renderiza o header e footer compartilhados do Agenteresolve", async ({ page }) => {
+  await page.goto("/");
+
+  const header = page.locator('header[data-slot="header"]');
+  await expect(header).toBeVisible();
+  await expect(header.getByText("Agenteresolve")).toBeVisible();
+
+  const footer = page.locator('footer[data-slot="footer"]');
+  await expect(footer).toBeVisible();
+  await expect(footer.getByText("Todos os direitos reservados")).toBeVisible();
+
+  await expect(page.getByRole("link", { name: /Institucional/ }).first()).toBeVisible();
+  await expect(page.getByText("Carregando interface…")).toHaveCount(0);
+});

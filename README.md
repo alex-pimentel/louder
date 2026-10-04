@@ -22,6 +22,8 @@ backend nem qualquer processamento no servidor.
 - 🌗 Tema claro/escuro · 📱 Responsivo
 - 📴 **Offline após o primeiro acesso** (service worker)
 - 🔒 Preferências (voz, velocidade, tom, volume, tema) salvas **apenas em `localStorage`**
+- 🧩 Shell compartilhado da Agenteresolve (`@agenteresolve/ui`): header, footer e tokens do
+  design system; login Clerk **opcional** (funciona sem chave)
 
 ## Como rodar
 
@@ -41,6 +43,20 @@ npm run preview    # serve o dist/ localmente
 
 O build gera um site estático em `dist/` — sem runtime de servidor.
 
+### Login Clerk (opcional)
+
+O Louder funciona **sem login**. Se `VITE_CLERK_PUBLISHABLE_KEY` estiver definida no build, o
+`UserButton` do Clerk aparece no header; sem a variável, o shell renderiza um botão neutro e o
+leitor continua funcionando normalmente. Veja `.env.example`.
+
+## Shell compartilhado (`@agenteresolve/ui`)
+
+O app é envolvido pelo `ServiceShell` do pacote `@agenteresolve/ui` (git dependency
+`github:alex-pimentel/agenteresolve-ui`), que fornece header/footer/tokens compartilhados com os
+outros serviços. O `styles.css` do pacote é importado junto ao Tailwind v4. A aplicação segue
+**100% client-side**: o pacote é buildado no `install` (script `prepare`) e nada em runtime
+depende de backend.
+
 ## Deploy (Cloudflare Pages)
 
 O `dist/` é compatível com Cloudflare Pages e qualquer host estático:
@@ -54,9 +70,12 @@ O `dist/` é compatível com Cloudflare Pages e qualquer host estático:
 ## Qualidade
 
 ```bash
-npm run lint       # ESLint
-npm run types      # tsc --noEmit
-npm test           # Vitest (segmentação + wrapper de fala)
+npm run lint          # ESLint
+npm run types         # tsc --noEmit
+npm test              # Vitest (segmentação, fala, preferências, shell)
+npm run test:coverage # cobertura V8 com meta mínima
+npm run test:e2e      # Playwright (precisa de browsers instalados)
+npm run build         # typecheck + build estático
 ```
 
 ## Estrutura
@@ -64,14 +83,18 @@ npm test           # Vitest (segmentação + wrapper de fala)
 ```
 index.html                 → shell da aplicação
 src/main.ts                → controlador da UI (fonte, voz, transporte, atalhos)
-src/style.css              → tema claro/escuro e responsivo
+src/shell/                 → integração com o ServiceShell do @agenteresolve/ui
+src/style.css              → tema claro/escuro + tokens do design system
 src/lib/segmentation.ts    → normalização e segmentação em trechos
 src/lib/speech.ts          → wrapper testável da Web Speech API
 src/lib/pdf.ts             → extração de PDF com PDF.js
+src/lib/preferences.ts     → normalização pura das preferências
 src/lib/storage.ts         → preferências em localStorage (única persistência)
+src/lib/shell.ts           → resolução da chave Clerk (login opcional)
 public/sw.js               → service worker (cache offline)
 public/manifest.webmanifest→ metadados PWA
 tests/                     → testes Vitest
+e2e/                       → smoke test Playwright
 ```
 
 ## Privacidade e limites

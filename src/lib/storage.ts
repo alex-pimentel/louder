@@ -1,22 +1,9 @@
-export interface Preferences {
-  voiceURI: string | null;
-  rate: number;
-  pitch: number;
-  volume: number;
-  filter: string;
-  theme: "light" | "dark";
-}
+import { coercePreferences, DEFAULT_PREFERENCES, type Preferences } from "./preferences";
+
+export type { Preferences, Theme } from "./preferences";
+export { DEFAULT_PREFERENCES };
 
 export const PREFERENCES_KEY = "louder-preferences";
-
-export const DEFAULT_PREFERENCES: Preferences = {
-  voiceURI: null,
-  rate: 1,
-  pitch: 1,
-  volume: 1,
-  filter: "pt-BR",
-  theme: "light",
-};
 
 function resolveStorage(storage?: Storage): Storage | null {
   if (storage) {
@@ -39,8 +26,7 @@ export function loadPreferences(storage?: Storage): Preferences {
     if (!raw) {
       return { ...DEFAULT_PREFERENCES };
     }
-    const parsed = JSON.parse(raw) as Partial<Preferences>;
-    return { ...DEFAULT_PREFERENCES, ...parsed };
+    return coercePreferences(JSON.parse(raw));
   } catch {
     return { ...DEFAULT_PREFERENCES };
   }

@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@import "@agenteresolve/ui/styles.css";
+
 :root {
   --bg: #f6f7fb;
   --card: #ffffff;
@@ -49,51 +52,12 @@ body {
     radial-gradient(700px 340px at 90% 10%, rgba(0, 206, 201, 0.14), transparent);
 }
 
-.topbar {
-  max-width: 1020px;
-  margin: 0 auto;
-  padding: 20px 20px 0;
+.reader-tools {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.logo {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  font-size: 26px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-}
-
-.brand h1 {
-  margin: 0;
-  font-size: 24px;
-  letter-spacing: 0.2px;
-}
-
-.brand p {
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.top-actions {
-  display: flex;
+  justify-content: flex-end;
   gap: 10px;
   align-items: center;
+  margin: 14px 0 0;
 }
 
 .badge {

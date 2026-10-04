@@ -1,4 +1,8 @@
 import "./style.css";
+import * as React from "react";
+import { createElement } from "react";
+import { createRoot } from "react-dom/client";
+import { Shell } from "./shell/shell";
 import { MAX_PDF_BYTES, extractPdfText } from "./lib/pdf";
 import { chunkText } from "./lib/segmentation";
 import {
@@ -314,9 +318,11 @@ async function handleFile(file: File): Promise<void> {
       });
       pdfProgress.hidden = true;
       setText(text, `📎 ${file.name} (${sizeKb} KB)`);
+      renderReader(text);
     } else {
       const text = await file.text();
       setText(text.replace(/\r\n/g, "\n"), `📎 ${file.name} (${sizeKb} KB)`);
+      renderReader(text);
     }
     announce("Arquivo carregado. Aperte ▶ para ouvir.");
   } catch (error) {
@@ -490,6 +496,13 @@ function buildReaderView(): void {
   textInput.style.display = "none";
 }
 
+function renderReader(text: string): void {
+  chunks = chunkText(text);
+  chunkIndex = 0;
+  buildReaderView();
+  highlight();
+}
+
 function highlight(): void {
   for (const element of Array.from(readerText.children)) {
     const index = Number((element as HTMLElement).dataset.index);
@@ -537,3 +550,33 @@ if (import.meta.env.PROD && "serviceWorker" in navigator) {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
   });
 }
+
+function mountShell(): void {
+  const root = document.getElementById("app");
+  const content = document.getElementById("app-content");
+  if (!root || !content) {
+    return;
+  }
+  content.remove();
+  root.replaceChildren();
+  createRoot(root).render(createElement(Shell, null, createElement(DomContent, { node: content })));
+}
+
+interface DomContentProps {
+  node: HTMLElement;
+}
+
+function DomContent({ node }: DomContentProps) {
+  const host = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const element = host.current;
+    if (element && !element.contains(node)) {
+      element.appendChild(node);
+    }
+  }, [node]);
+
+  return createElement("div", { ref: host });
+}
+
+mountShell();
