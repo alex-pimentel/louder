@@ -71,7 +71,7 @@ test("renderiza o header e footer compartilhados do Agenteresolve", async ({ pag
   await expect(footer).toBeVisible();
   await expect(footer.getByText("Todos os direitos reservados")).toBeVisible();
 
-  await expect(footer.getByRole('heading', { name: /Institucional/ })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'Sobre' })).toBeVisible();
+  await expect(footer.getByRole("heading", { name: /Institucional/ })).toBeVisible();
+  await expect(footer.getByRole("link", { name: "Sobre" })).toBeVisible();
   await expect(page.getByText("Carregando interface…")).toHaveCount(0);
 });
