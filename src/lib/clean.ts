@@ -7,16 +7,20 @@ const NAMED_ENTITIES: Record<string, string> = {
   nbsp: " ",
 };
 
+function codePointToString(code: number): string {
+  if (!Number.isSafeInteger(code) || code < 0 || code > 0x10ffff) {
+    return "";
+  }
+  if (code >= 0xd800 && code <= 0xdfff) {
+    return "";
+  }
+  return String.fromCodePoint(code);
+}
+
 function decodeEntities(text: string): string {
   return text
-    .replace(/&#(\d+);/g, (_match, digits: string) => {
-      const code = Number(digits);
-      return Number.isSafeInteger(code) ? String.fromCodePoint(code) : "";
-    })
-    .replace(/&#x([0-9a-fA-F]+);/g, (_match, hex: string) => {
-      const code = parseInt(hex, 16);
-      return Number.isSafeInteger(code) ? String.fromCodePoint(code) : "";
-    })
+    .replace(/&#(\d+);/g, (_match, digits: string) => codePointToString(Number(digits)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_match, hex: string) => codePointToString(parseInt(hex, 16)))
     .replace(/&([a-zA-Z]+);/g, (match, name: string) => NAMED_ENTITIES[name] ?? match);
 }
 

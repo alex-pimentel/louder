@@ -196,7 +196,8 @@ export function ControlRail({
         </label>
         <p className="muted small">
           Remove formatação de Markdown, HTML e PDF antes de ler. Vale para texto colado, arquivos e
-          páginas.
+          páginas. Páginas que bloqueiam o acesso direto são lidas via proxy de terceiros
+          (r.jina.ai).
         </p>
       </section>
     </div>
