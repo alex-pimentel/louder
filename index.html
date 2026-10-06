@@ -42,18 +42,30 @@
                 aria-label="Enviar arquivo PDF ou texto"
               >
                 <div class="dz-icon" aria-hidden="true">📥</div>
-                <p><strong>Arraste um PDF, TXT ou MD aqui</strong></p>
+                <p><strong>Arraste um PDF, TXT, MD ou HTML aqui</strong></p>
                 <p class="muted">ou</p>
                 <label class="btn primary" for="fileInput">Escolher arquivo</label>
                 <input
                   id="fileInput"
                   type="file"
-                  accept=".pdf,.txt,.md,.markdown,.text,text/plain,application/pdf"
+                  accept=".pdf,.txt,.md,.markdown,.text,.html,.htm,text/plain,text/html,application/pdf"
                   hidden
                 />
                 <p id="fileName" class="file-name muted"></p>
                 <p id="pdfProgress" class="muted small" hidden></p>
               </div>
+
+              <div class="row url-row">
+                <input
+                  id="urlInput"
+                  type="url"
+                  inputmode="url"
+                  placeholder="https://exemplo.com/pagina para ler a página…"
+                  aria-label="URL da página para leitura"
+                />
+                <button id="urlBtn" class="btn primary">🌐 Ler página</button>
+              </div>
+              <p id="urlProgress" class="muted small" hidden></p>
 
               <div class="row">
                 <button id="sampleBtn" class="btn ghost">✨ Usar texto de exemplo</button>
@@ -62,6 +74,10 @@
 
               <label class="label" for="textInput">
                 Texto para leitura <span id="charCount" class="muted small">0 caracteres</span>
+              </label>
+              <label class="check" for="cleanToggle">
+                <input id="cleanToggle" type="checkbox" checked />
+                🧹 Ler texto limpo (remove formatação de Markdown, HTML e PDF)
               </label>
               <textarea
                 id="textInput"

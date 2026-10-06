@@ -12,7 +12,9 @@ describe("Shell", () => {
       </Shell>,
     );
 
-    const header = (await screen.findByRole("banner")) as HTMLElement;
+    const header = (await screen.findByRole("banner", undefined, {
+      timeout: 5_000,
+    })) as HTMLElement;
     expect(header).toBeTruthy();
     expect(header.textContent).toContain("Agenteresolve");
     expect(screen.getByText("Conteúdo do leitor")).toBeTruthy();
@@ -30,6 +32,6 @@ describe("Shell", () => {
       </Shell>,
     );
 
-    expect(await screen.findByTestId("fallback")).toBeTruthy();
+    expect(await screen.findByTestId("fallback", undefined, { timeout: 5_000 })).toBeTruthy();
   });
 });

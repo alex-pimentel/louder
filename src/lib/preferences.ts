@@ -7,6 +7,7 @@ export interface Preferences {
   pitch: number;
   volume: number;
   theme: Theme;
+  cleanText: boolean;
 }
 
 /** Valid voice filter values accepted by the UI. */
@@ -21,6 +22,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   pitch: 1,
   volume: 1,
   theme: "light",
+  cleanText: true,
 };
 
 function toNumber(value: unknown, min: number, max: number, fallback: number): number {
@@ -42,6 +44,10 @@ function toTheme(value: unknown): Theme {
   return value === "dark" ? "dark" : "light";
 }
 
+function toBoolean(value: unknown, fallback: boolean): boolean {
+  return typeof value === "boolean" ? value : fallback;
+}
+
 /**
  * Normalizes an untyped value (typically parsed `localStorage`) into a valid
  * `Preferences` object, falling back per-field. Pure and safe to unit test.
@@ -60,5 +66,6 @@ export function coercePreferences(value: unknown): Preferences {
     pitch: toNumber(source.pitch, 0.5, 2, DEFAULT_PREFERENCES.pitch),
     volume: toNumber(source.volume, 0, 1, DEFAULT_PREFERENCES.volume),
     theme: toTheme(source.theme),
+    cleanText: toBoolean(source.cleanText, DEFAULT_PREFERENCES.cleanText),
   };
 }

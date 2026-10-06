@@ -5,6 +5,8 @@ import { createRoot } from "react-dom/client";
 import { Shell } from "./shell/shell";
 import { MAX_PDF_BYTES, extractPdfText } from "./lib/pdf";
 import { chunkText } from "./lib/segmentation";
+import { cleanTextForSpeech } from "./lib/clean";
+import { ArticleError, fetchArticleText, isHttpUrl } from "./lib/article";
 import {
   createSpeechEngine,
   filterVoices,
@@ -39,6 +41,10 @@ const charCount = $("charCount");
 const sampleBtn = $("sampleBtn") as HTMLButtonElement;
 const clearBtn = $("clearBtn") as HTMLButtonElement;
 const editBtn = $("editBtn") as HTMLButtonElement;
+const urlInput = $("urlInput") as HTMLInputElement;
+const urlBtn = $("urlBtn") as HTMLButtonElement;
+const urlProgress = $("urlProgress");
+const cleanToggle = $("cleanToggle") as HTMLInputElement;
 const readerView = $("readerView");
 const readerText = $("readerText");
 const voiceFilter = $("voiceFilter") as HTMLSelectElement;
@@ -81,6 +87,7 @@ voiceFilter.value = preferences.filter;
 rate.value = String(preferences.rate);
 pitch.value = String(preferences.pitch);
 volume.value = String(preferences.volume);
+cleanToggle.checked = preferences.cleanText;
 syncSliderLabels();
 
 if (!synth) {
@@ -251,6 +258,58 @@ clearBtn.addEventListener("click", () => {
   setText("", "");
 });
 
+cleanToggle.addEventListener("change", () => {
+  preferences.cleanText = cleanToggle.checked;
+  persist();
+  stopReading();
+  if (textInput.value.trim()) {
+    renderReader(textInput.value);
+  }
+});
+
+urlBtn.addEventListener("click", () => {
+  void handleUrl();
+});
+
+urlInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    void handleUrl();
+  }
+});
+
+async function handleUrl(): Promise<void> {
+  const raw = urlInput.value.trim();
+  if (!isHttpUrl(raw)) {
+    announce("URL inválida. Use um endereço http(s) completo, ex.: https://exemplo.com/pagina");
+    return;
+  }
+  stopReading();
+  urlBtn.disabled = true;
+  urlProgress.hidden = false;
+  urlProgress.textContent = "Buscando página…";
+  try {
+    const article = await fetchArticleText(raw);
+    const host = new URL(raw).hostname;
+    setText(article.text, `🌐 ${article.title} — ${host}`);
+    renderReader(textInput.value);
+    if (article.via === "reader-proxy") {
+      announce(
+        "Página carregada via proxy de leitura (o site bloqueou o acesso direto; " +
+          "nesse modo o conteúdo passa por um serviço de terceiros). Aperte ▶ para ouvir.",
+      );
+    } else {
+      announce("Página carregada. Aperte ▶ para ouvir.");
+    }
+  } catch (error) {
+    const message = error instanceof ArticleError ? error.message : (error as Error).message;
+    announce(`Não foi possível ler a página: ${message}`);
+  } finally {
+    urlBtn.disabled = false;
+    urlProgress.hidden = true;
+  }
+}
+
 editBtn.addEventListener("click", () => {
   readerView.hidden = true;
   textInput.style.display = "";
@@ -358,6 +417,10 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+function prepareForSpeech(text: string): string {
+  return preferences.cleanText ? cleanTextForSpeech(text) : text;
+}
+
 function toggle(): void {
   if (speaking && !paused) {
     pauseReading();
@@ -381,7 +444,7 @@ function startReading(): void {
     return;
   }
 
-  chunks = chunkText(text);
+  chunks = chunkText(prepareForSpeech(text));
   if (!chunks.length) {
     return;
   }
@@ -497,7 +560,7 @@ function buildReaderView(): void {
 }
 
 function renderReader(text: string): void {
-  chunks = chunkText(text);
+  chunks = chunkText(prepareForSpeech(text));
   chunkIndex = 0;
   buildReaderView();
   highlight();
