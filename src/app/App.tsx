@@ -16,7 +16,7 @@ import {
   createSpeechEngine,
   filterVoices,
   getBrowserSynthesis,
-  pickDefaultVoice,
+  resolveVoiceURI,
   sortVoices,
   type SpeakOptions,
   type SpeechEngine,
@@ -87,8 +87,7 @@ export function App() {
     () => filterVoices(allVoices, preferences.filter),
     [allVoices, preferences.filter],
   );
-  const chosenVoice = pickDefaultVoice(allVoices, preferences.filter, preferences.voiceURI) ?? null;
-  const voiceURI = preferences.voiceURI ?? chosenVoice?.voiceURI ?? "";
+  const voiceURI = resolveVoiceURI(allVoices, preferences.filter, preferences.voiceURI);
   const selectedVoice = allVoices.find((voice) => voice.voiceURI === voiceURI) ?? null;
   const hasVoices = allVoices.length > 0;
 

@@ -4,6 +4,7 @@ import {
   describeSpeechError,
   filterVoices,
   pickDefaultVoice,
+  resolveVoiceURI,
   sortVoices,
   voiceScore,
   type SpeechSynthesisVoiceLike,
@@ -103,6 +104,30 @@ describe("pickDefaultVoice", () => {
 
   it("returns null for an empty list", () => {
     expect(pickDefaultVoice([], "all", null)).toBeNull();
+  });
+});
+
+describe("resolveVoiceURI", () => {
+  const list = [voice({ voiceURI: "a", lang: "pt-BR" }), voice({ voiceURI: "b", lang: "en" })];
+
+  it("keeps the saved URI when the voice is in the filtered list", () => {
+    expect(resolveVoiceURI(list, "all", "b")).toBe("b");
+  });
+
+  it("falls back to the filtered default when the saved voice is gone", () => {
+    expect(resolveVoiceURI(list, "all", "missing")).toBe("a");
+  });
+
+  it("falls back to the filtered default when the saved voice is filtered out", () => {
+    expect(resolveVoiceURI(list, "pt", "b")).toBe("a");
+  });
+
+  it("resolves the default when nothing was saved", () => {
+    expect(resolveVoiceURI(list, "pt", null)).toBe("a");
+  });
+
+  it("returns an empty string when there are no voices", () => {
+    expect(resolveVoiceURI([], "all", null)).toBe("");
   });
 });
 

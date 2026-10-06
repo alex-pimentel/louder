@@ -125,6 +125,19 @@ export function pickDefaultVoice(
   return list[0];
 }
 
+/**
+ * Resolves the voice URI the UI should select: keeps the saved URI when that
+ * voice is in the filtered list, otherwise falls back to the filtered default
+ * (never a stale URI pointing at a voice that is gone or filtered out).
+ */
+export function resolveVoiceURI(
+  voices: SpeechSynthesisVoiceLike[],
+  filter: string,
+  savedUri: string | null,
+): string {
+  return pickDefaultVoice(voices, filter, savedUri)?.voiceURI ?? "";
+}
+
 function defaultCreateUtterance(text: string): UtteranceLike {
   const ctor = (
     globalThis as {

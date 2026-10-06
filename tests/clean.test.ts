@@ -75,6 +75,10 @@ describe("cleanTextForSpeech", () => {
     expect(cleanTextForSpeech("10 < 20 é verdade")).toBe("10 < 20 é verdade");
   });
 
+  it("ignores out-of-range and surrogate numeric entities instead of throwing", () => {
+    expect(cleanTextForSpeech("&#1114112; &#55296; &#xD800; fim")).toBe("fim");
+  });
+
   it("decodes common HTML entities", () => {
     expect(cleanTextForSpeech("pão &amp; café &nbsp; 10 &lt; 20 &#39;ok&#39;")).toBe(
       "pão & café 10 < 20 'ok'",
