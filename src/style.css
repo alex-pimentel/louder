@@ -1,25 +1,63 @@
 @import "tailwindcss";
 @import "@agenteresolve/ui/styles.css";
 
+/*
+ * Louder theme: shadcn-style tokens. Light is the default (`:root`);
+ * `[data-theme="dark"]` is the graphite-black editor theme. Legacy
+ * `--bg/--ink/--line` aliases keep the pre-migration layout rendering
+ * until Task 5 replaces it.
+ */
 :root {
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --ink: #1e2230;
-  --muted: #6b7280;
-  --brand: #6c5ce7;
-  --brand-2: #a29bfe;
-  --line: #e8eaf2;
-  --radius: 18px;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.16 0.006 265);
+  --surface: oklch(0.97 0.003 265);
+  --surface-strong: oklch(0.93 0.005 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.006 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.006 265);
+  --muted: oklch(0.95 0.004 265);
+  --muted-foreground: oklch(0.48 0.012 265);
+  --border: oklch(0.88 0.006 265);
+  --input: oklch(0.88 0.006 265);
+  --ring: oklch(0.62 0.19 256);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --success: oklch(0.72 0.17 150);
+
+  --bg: var(--background);
+  --ink: var(--foreground);
+  --line: var(--border);
+  --brand: var(--foreground);
+  --brand-2: var(--muted-foreground);
+  --radius: 0.75rem;
   --shadow: 0 12px 40px rgba(30, 34, 48, 0.08);
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --bg: #0f1220;
-  --card: #171b2e;
-  --ink: #eef0ff;
-  --muted: #9aa0b8;
-  --line: #262c48;
+  --background: oklch(0.16 0.006 265);
+  --foreground: oklch(0.97 0.003 265);
+  --surface: oklch(1 0 0 / 5%);
+  --surface-strong: oklch(1 0 0 / 8%);
+  --card: oklch(1 0 0 / 5%);
+  --card-foreground: oklch(0.97 0.003 265);
+  --popover: oklch(0.19 0.006 265);
+  --popover-foreground: oklch(0.97 0.003 265);
+  --muted: oklch(1 0 0 / 6%);
+  --muted-foreground: oklch(0.72 0.012 265);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.62 0.19 256);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --success: oklch(0.72 0.17 150);
+
+  --bg: var(--background);
+  --ink: var(--foreground);
+  --line: var(--border);
+  --brand: var(--foreground);
+  --brand-2: var(--muted-foreground);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   color-scheme: dark;
 }
@@ -66,7 +104,7 @@ body {
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--card);
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .badge.online {
@@ -111,7 +149,7 @@ body {
 }
 
 .subtitle {
-  color: var(--muted);
+  color: var(--muted-foreground);
   margin: 10px 0 0;
 }
 
@@ -176,7 +214,7 @@ body {
 }
 
 .muted {
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .small {
@@ -209,7 +247,7 @@ body {
 .btn.primary {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--background);
   display: inline-block;
 }
 
@@ -393,14 +431,14 @@ input[type="range"] {
 #progressBar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--brand), #00cec9);
+  background: var(--brand);
   transition: width 0.3s;
 }
 
 .how {
   margin-top: 16px;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .how summary {
