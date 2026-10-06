@@ -61,15 +61,13 @@ describe("cleanTextForSpeech", () => {
   });
 
   it("removes script blocks with attributes and odd closing tags", () => {
-    expect(
-      cleanTextForSpeech('<p>texto</p><script type="x">alert(1)</script \n foo>'),
-    ).toBe("texto");
+    expect(cleanTextForSpeech('<p>texto</p><script type="x">alert(1)</script \n foo>')).toBe(
+      "texto",
+    );
   });
 
   it("removes nested script tags without leaving remnants", () => {
-    expect(cleanTextForSpeech("<scr<script>ipt>alert(1)</scr</script>ipt>Texto")).toBe(
-      "Texto",
-    );
+    expect(cleanTextForSpeech("<scr<script>ipt>alert(1)</scr</script>ipt>Texto")).toBe("Texto");
   });
 
   it("drops unclosed trailing tags but keeps comparisons", () => {
