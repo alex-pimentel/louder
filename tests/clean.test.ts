@@ -60,6 +60,23 @@ describe("cleanTextForSpeech", () => {
     );
   });
 
+  it("removes script blocks with attributes and odd closing tags", () => {
+    expect(
+      cleanTextForSpeech('<p>texto</p><script type="x">alert(1)</script \n foo>'),
+    ).toBe("texto");
+  });
+
+  it("removes nested script tags without leaving remnants", () => {
+    expect(cleanTextForSpeech("<scr<script>ipt>alert(1)</scr</script>ipt>Texto")).toBe(
+      "Texto",
+    );
+  });
+
+  it("drops unclosed trailing tags but keeps comparisons", () => {
+    expect(cleanTextForSpeech("Texto <script")).toBe("Texto");
+    expect(cleanTextForSpeech("10 < 20 é verdade")).toBe("10 < 20 é verdade");
+  });
+
   it("decodes common HTML entities", () => {
     expect(cleanTextForSpeech("pão &amp; café &nbsp; 10 &lt; 20 &#39;ok&#39;")).toBe(
       "pão & café 10 < 20 'ok'",

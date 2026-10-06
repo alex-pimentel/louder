@@ -21,14 +21,26 @@ function decodeEntities(text: string): string {
 }
 
 function stripHtml(text: string): string {
-  const withoutScripts = text
-    .replace(/<script[\s>][\s\S]*?<\/script\s*>/gi, "\n")
-    .replace(/<style[\s>][\s\S]*?<\/style\s*>/gi, "\n");
-  const blockTagsAsBreaks = withoutScripts.replace(
-    /<\/?(?:p|div|h[1-6]|li|ul|ol|table|tr|td|th|thead|tbody|section|article|header|footer|br|hr|blockquote|pre)[\s>]/gi,
+  // Block removal tolerates attributes and whitespace inside both tags, so
+  // odd-but-valid closings like `</script \n foo>` are consumed as well.
+  const withoutBlocks = text
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, "\n")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, "\n");
+  const blockTagsAsBreaks = withoutBlocks.replace(
+    /<\/?(?:p|div|h[1-6]|li|ul|ol|table|tr|td|th|thead|tbody|section|article|header|footer|br|hr|blockquote|pre)[\s>/]/gi,
     "\n",
   );
-  return blockTagsAsBreaks.replace(/<[^<>]+>/g, "");
+  // Repeat until no complete tag remains: each pass unwraps one nesting
+  // level (e.g. `<scr<script>ipt>`), so doubled tags cannot resurface.
+  let previous = "";
+  let stripped = blockTagsAsBreaks;
+  while (stripped !== previous) {
+    previous = stripped;
+    stripped = stripped.replace(/<[^<>]+>/g, "");
+  }
+  // Drop an unclosed tag-like tail (`Texto <script`); a `<` followed by a
+  // space or digit (comparisons like `10 < 20`) is left untouched.
+  return stripped.replace(/<[a-zA-Z/][^<>]*$/g, "");
 }
 
 function stripMarkdown(text: string): string {
