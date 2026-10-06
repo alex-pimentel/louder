@@ -19,7 +19,7 @@ claro).
 
 - Migração total da camada de apresentação vanilla → React 19. Nenhuma
   lógica de domínio é reescrita: `src/lib/{pdf,segmentation,clean,article,
-  speech,storage,preferences}.ts` são reaproveitados sem alteração de
+speech,storage,preferences}.ts` são reaproveitados sem alteração de
   comportamento.
 - Estrutura nova:
   - `src/app/App.tsx` — composição do shell + provedores de estado.
