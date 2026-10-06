@@ -10,6 +10,7 @@ describe("coercePreferences", () => {
       pitch: 1,
       volume: 1,
       theme: "light",
+      cleanText: true,
     });
   });
 
@@ -25,6 +26,7 @@ describe("coercePreferences", () => {
       pitch: 0.8,
       volume: 0.4,
       theme: "dark",
+      cleanText: true,
     });
 
     expect(prefs).toEqual({
@@ -34,6 +36,7 @@ describe("coercePreferences", () => {
       pitch: 0.8,
       volume: 0.4,
       theme: "dark",
+      cleanText: true,
     });
   });
 
@@ -54,6 +57,7 @@ describe("coercePreferences", () => {
       pitch: 2,
       volume: 0,
       theme: "light",
+      cleanText: true,
     });
   });
 
@@ -62,5 +66,12 @@ describe("coercePreferences", () => {
     expect(coercePreferences({ rate: 0 }).rate).toBe(0.5);
     expect(coercePreferences({ volume: 2 }).volume).toBe(1);
     expect(coercePreferences({ pitch: 0 }).pitch).toBe(0.5);
+  });
+
+  it("coerces the clean-text toggle, defaulting to on", () => {
+    expect(coercePreferences({ cleanText: false }).cleanText).toBe(false);
+    expect(coercePreferences({ cleanText: true }).cleanText).toBe(true);
+    expect(coercePreferences({}).cleanText).toBe(true);
+    expect(coercePreferences({ cleanText: "yes" }).cleanText).toBe(true);
   });
 });

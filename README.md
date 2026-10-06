@@ -4,8 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/alex-pimentel/louder)](https://github.com/alex-pimentel/louder/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-O Louder extrai o texto de **PDF, TXT e MD** (ou de um texto colado) e o reproduz em voz alta
-usando as vozes do seu próprio sistema. É uma aplicação **web-only**: não há Electron, Python,
+O Louder extrai o texto de **PDF, TXT, MD e HTML** (ou de um texto colado ou de uma **URL**)
+e o reproduz em voz alta usando as vozes do seu próprio sistema. É uma aplicação **web-only**: não há Electron, Python,
 backend nem qualquer processamento no servidor.
 
 > **100% client-side.** Seus arquivos nunca saem do dispositivo. Não existe upload, não existe
@@ -14,7 +14,9 @@ backend nem qualquer processamento no servidor.
 
 ## Recursos
 
-- 📄 Arrastar-e-soltar **PDF / TXT / MD**, seletor de arquivos e texto colado
+- 📄 Arrastar-e-soltar **PDF / TXT / MD / HTML**, seletor de arquivos, texto colado e **URL de página**
+- 🧹 **Ler texto limpo** (interruptor, ligado por padrão): remove formatação de Markdown, tags HTML e artefatos de PDF antes da leitura
+- 🌐 Leitura de páginas web pela URL: extrai o artigo no navegador (Readability); se o site bloquear, usa o proxy público r.jina.ai (com aviso — nesse modo o conteúdo passa por terceiros)
 - 📑 Extração de PDF com **barra de progresso** (PDF.js, dentro do navegador)
 - ✂️ Segmentação em trechos (parágrafos/frases) com navegação anterior/próximo
 - 🎙 Leitura com `window.speechSynthesis`; **vozes do sistema**
